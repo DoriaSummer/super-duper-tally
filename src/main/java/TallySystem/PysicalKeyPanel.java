@@ -1,12 +1,17 @@
 package TallySystem;
 
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PysicalKeyPanel extends JPanel {
+    static final int PROGRESS_MIN = 0;
+    static final int PROGRESS_MAX = 5000;
+
     TallyController m_controller;
     JLabel m_msgLab;
 
@@ -14,14 +19,21 @@ public class PysicalKeyPanel extends JPanel {
     JButton m_exitBtn;
 
     Timer t;
-    // JProgressBar bar;
+    JProgressBar progressBar;
+    int currentProgress = 0;
 
     public PysicalKeyPanel(TallyController c) {
         m_controller = c;
-        setLayout(null);
+        setLayout(new FlowLayout(FlowLayout.LEADING, 5,5));
         m_msgLab = new JLabel("Please insert the physical key!");
-        m_msgLab.setBounds(10, 20, 250, 25);
+        m_msgLab.setBounds(10, 20, 350, 25);
         add(m_msgLab);
+
+        progressBar = new JProgressBar(PROGRESS_MIN, PROGRESS_MAX);
+        progressBar.setValue(currentProgress);
+        progressBar.setStringPainted(true);
+        progressBar.setBounds(10, 60, 80, 30);
+        add(progressBar);
 
         m_confirmBtn = new JButton("OK");
         m_confirmBtn.setBounds(10, 110, 80, 25);
@@ -51,7 +63,6 @@ public class PysicalKeyPanel extends JPanel {
         // boolean confirmClickInfo = false;
         // simulate physical key inserted with a timer
         m_controller.gotoLoginPanel();
-
     }
 
     void exitClick() {
@@ -66,6 +77,9 @@ public class PysicalKeyPanel extends JPanel {
     public void showPanel() {
         m_confirmBtn.setVisible(false);
         m_exitBtn.setVisible(false);
+        progressBar.setVisible(true);
+        currentProgress = 0;
+        progressBar.setValue(currentProgress);
         this.setVisible(true);
         tick();
     }
@@ -74,11 +88,21 @@ public class PysicalKeyPanel extends JPanel {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("5s end");
-                m_confirmBtn.setVisible(true);
-                m_exitBtn.setVisible(true);
+                if (!isShowing()){
+                    return;
+                }
+                currentProgress+=100;
+                progressBar.setValue(currentProgress);
+                if (currentProgress >= PROGRESS_MAX){
+                    System.out.println("5s end");
+                    m_msgLab.setText("Check physical key succeed! Press ok to login.");
+                    m_confirmBtn.setVisible(true);
+                    m_exitBtn.setVisible(true);
+                    progressBar.setVisible(false);
+                    cancel();
+                }
             }
-        }, 5000);
+        }, 0,100);
     }
 
 }
