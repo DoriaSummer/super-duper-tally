@@ -85,7 +85,7 @@ public class LoginPanel extends JPanel {
         if (resList.size() == 0) {
             // System.out.println("res:" + resList);
             TallySystem.showInfoDialog("Incorrect account or password");
-            return;
+            // return;
         } else {
             TallySystem.showInfoDialog("Login succeed");
             Delegate.GetInstance().login("", account, "");
@@ -98,14 +98,15 @@ public class LoginPanel extends JPanel {
 
     void exitClick() {
         // End process
-        TallySystem.showInfoDialog("Exit succeed");
-        System.exit(0);
+        int option = JOptionPane.showConfirmDialog(null, "Quit the system?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
+        if (option == 0){
+            System.out.println("Quit confirm");
+            System.exit(0);
+        }
     }
 
     boolean checkAccount(String acc) {
-        // only contain [a-zA-Z0-9_]
-        //
-        if (acc.length() >= 6 && acc.matches("[a-zA-Z0-9_]+")) {
+        if (acc.matches("^[a-zA-Z][a-zA-Z0-9_]{4,15}$")) {
             String[] reserves = {"root", "daemon", "sync", "shutdown", "halt", "mail", "uucp", "operator", "games", "oprofile", "postgres", "mysql", "rpcuser", "apache", "Pegasus", "webalizer", "haldaemon", "vcsa", "avahi", "tcpdump", "sshd", "dbus", "postfix", "tomcat", "hsqldb", "dovecot", "nobody", "usbmuxd", "abrt", "dovenull", "pulse", "qpidd", "saslauth", "cimsrvr", "rtkit", "nfsnobody"};
             for (String r : reserves) {
                 if (acc.equals(r)) {

@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,19 +25,20 @@ public class PysicalKeyPanel extends JPanel {
 
     public PysicalKeyPanel(TallyController c) {
         m_controller = c;
-        setLayout(new FlowLayout(FlowLayout.LEADING, 5,5));
-        m_msgLab = new JLabel("Please insert the physical key!");
+        // setLayout(new FlowLayout(FlowLayout.LEADING, 5,5));
+        setLayout(null);
+        m_msgLab = new JLabel("Checking physical key!");
         m_msgLab.setBounds(10, 20, 350, 25);
         add(m_msgLab);
 
         progressBar = new JProgressBar(PROGRESS_MIN, PROGRESS_MAX);
         progressBar.setValue(currentProgress);
         progressBar.setStringPainted(true);
-        progressBar.setBounds(10, 60, 80, 30);
+        progressBar.setBounds(10, 55, 160, 30);
         add(progressBar);
 
         m_confirmBtn = new JButton("OK");
-        m_confirmBtn.setBounds(10, 110, 80, 25);
+        m_confirmBtn.setBounds(10, 55, 80, 25);
         m_confirmBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 confirmClick();
@@ -46,7 +48,7 @@ public class PysicalKeyPanel extends JPanel {
         m_confirmBtn.setVisible(false);
 
         m_exitBtn = new JButton("Exit");
-        m_exitBtn.setBounds(100, 110, 80, 25);
+        m_exitBtn.setBounds(100, 55, 80, 25);
         m_exitBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 exitClick();
@@ -77,14 +79,20 @@ public class PysicalKeyPanel extends JPanel {
     public void showPanel() {
         m_confirmBtn.setVisible(false);
         m_exitBtn.setVisible(false);
-        progressBar.setVisible(true);
+        progressBar.setVisible(false);
         currentProgress = 0;
         progressBar.setValue(currentProgress);
         this.setVisible(true);
-        tick();
+
+        // Need better simulation
+        String read = readFile("PhysicalKey.enc");
+        if(!read.equals("")) {
+            progressBar.setVisible(true);
+            loading();
+        }
     }
 
-    public void tick() {
+    public void loading() {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -94,8 +102,8 @@ public class PysicalKeyPanel extends JPanel {
                 currentProgress+=100;
                 progressBar.setValue(currentProgress);
                 if (currentProgress >= PROGRESS_MAX){
-                    System.out.println("5s end");
-                    m_msgLab.setText("Check physical key succeed! Press ok to login.");
+                    System.out.println("Loading 5s ends");
+                    m_msgLab.setText("Check physical key succeed! Press OK to login.");
                     m_confirmBtn.setVisible(true);
                     m_exitBtn.setVisible(true);
                     progressBar.setVisible(false);
@@ -104,4 +112,29 @@ public class PysicalKeyPanel extends JPanel {
             }
         }, 0,100);
     }
+
+    private static String readFile(String fileName) {
+        String encoding = "UTF-8";
+        File file = new File(fileName);
+        Long filelength = file.length();
+        byte[] filecontent = new byte[filelength.intValue()];
+        try {
+            FileInputStream in = new FileInputStream(file);
+            in.read(filecontent);
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new String(filecontent, encoding);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("The OS does not support " + encoding);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

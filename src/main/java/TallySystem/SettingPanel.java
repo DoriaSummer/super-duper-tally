@@ -63,7 +63,7 @@ public class SettingPanel extends JPanel {
         });
         add(m_confirmBtn);
 
-        m_cancelBtn = new JButton("Exit");
+        m_cancelBtn = new JButton("Cancel");
         m_cancelBtn.setBounds(140, 150, 80, 25);
         m_cancelBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
@@ -91,6 +91,8 @@ public class SettingPanel extends JPanel {
         if (!confirmPwd.equals(newPwd)) {
             TallySystem.showErrorDialog("Passwords entered differently, please try again.");
             m_oldPwdText.setText("");
+            m_newPwdText.setText("");
+            m_confirmPwdText.setText("");
             return;
         }
 
@@ -108,7 +110,7 @@ public class SettingPanel extends JPanel {
             m_oldPwdText.setText("");
             m_newPwdText.setText("");
             m_confirmPwdText.setText("");
-            return;
+            // return;
         } else {
             // change the password
             password = JdbcUtil.GenerateMd5(account+newPwd);
@@ -137,8 +139,7 @@ public class SettingPanel extends JPanel {
     }
 
     boolean checkPsw(String psw) {
-        // add more requirements
-        if (psw.length() >= 8) {
+        if (psw.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$")) {
             return true;
         }
         return false;

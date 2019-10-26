@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TallySystem implements TallyController {
-    static final int S_WIN_SIZE_WIDTH = 500;
-    static final int S_WIN_SIZE_HEIGHT = 500;
+    static final int S_WIN_SIZE_WIDTH = 400;
+    static final int S_WIN_SIZE_HEIGHT = 300;
     JFrame m_mainFrame;
     PysicalKeyPanel m_physicalKeyPanel;
     LoginPanel m_loginPanel;
@@ -88,8 +88,10 @@ public class TallySystem implements TallyController {
     @Override
     public void gotoOperationPanel() {
         // Login panel invisible
+        // Setting panel invisible
         // Operate panel visible
         m_loginPanel.setVisible(false);
+        m_settingPanel.setVisible(false);
         m_operationPanel.showPanel(Delegate.GetInstance().getUserName());
     }
 
