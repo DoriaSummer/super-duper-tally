@@ -1,11 +1,14 @@
-package TallySystem;
+package tally;
 
+import tally.auth.PhysicalKeyVerification;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -84,6 +87,13 @@ public class PysicalKeyPanel extends JPanel {
         currentProgress = 0;
         progressBar.setValue(currentProgress);
         this.setVisible(true);
+
+        PhysicalKeyVerification.setPhysicalKey(getClass().getClassLoader().getResource("PhysicalKey.enc").getFile());
+        try {
+            PhysicalKeyVerification.genKeyPair();
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | IOException e) {
+            e.printStackTrace();
+        }
 
         // Need better simulation
         String read = readFile("PhysicalKey.enc");

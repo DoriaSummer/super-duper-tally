@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 // Initial delegates data, must be deleted after use.
 public class TestWrite {
 

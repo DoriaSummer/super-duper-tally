@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 import javax.swing.*;
 import java.awt.*;

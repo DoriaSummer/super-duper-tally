@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 public class Delegate {
     private static Delegate s_instance = null;

@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;

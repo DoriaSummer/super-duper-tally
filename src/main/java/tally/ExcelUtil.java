@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
-package TallySystem;
+package tally;
 
 import java.io.File;
-import java.lang.reflect.Field;
 
 public class CommonUtil {
 

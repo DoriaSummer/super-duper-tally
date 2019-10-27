@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 public interface TallyController {
     public void gotoOperationPanel();

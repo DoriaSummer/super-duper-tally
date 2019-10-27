@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 import java.io.IOException;
 import java.io.InputStream;

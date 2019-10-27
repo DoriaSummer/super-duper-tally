@@ -1,4 +1,4 @@
-package TallySystem;
+package tally;
 
 public class Test {
 
