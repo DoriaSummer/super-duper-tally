@@ -42,7 +42,7 @@ public class ExcelUtil {
         for (Row row : sheet) {
             ArrayList<String> list = new ArrayList<String>();
             for (Cell cell : row) {
-                // 根据不同类型转化成字符串
+                // format to string by type
                 if (cell.getCellType() == CellType.STRING) {
                     list.add(cell.getStringCellValue());
                 } else {
@@ -84,7 +84,6 @@ public class ExcelUtil {
             for (int i = 1; i <= lists.size(); i++) {
                 Row row = sheet.createRow(i);
                 for (int j = 0; j < titles.length; j++) {
-                    // 在row行上创建一个方格
                     Cell cell = row.createCell(j);
                     cell.setCellValue(lists.get(i - 1).get(j));
                 }

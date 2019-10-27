@@ -80,19 +80,22 @@ public class SettingPanel extends JPanel {
         String newPwd = new String(m_newPwdText.getPassword());
         String confirmPwd = new String(m_confirmPwdText.getPassword());
 
+        if (!CommonUtil.CheckPassword(oldPwd)) {
+            TallySystem.showErrorDialog("Old password invalid, please try again.");
+            clearShowTxt();
+            return;
+        }
         // check new password validation
-        if (!checkPsw(newPwd)) {
+        if (!CommonUtil.CheckPassword(newPwd)) {
             TallySystem.showErrorDialog("New password invalid, please try again.");
-            m_oldPwdText.setText("");
+            clearShowTxt();
             return;
         }
 
         // check consistency
         if (!confirmPwd.equals(newPwd)) {
             TallySystem.showErrorDialog("Passwords entered differently, please try again.");
-            m_oldPwdText.setText("");
-            m_newPwdText.setText("");
-            m_confirmPwdText.setText("");
+            clearShowTxt();
             return;
         }
 
@@ -107,9 +110,7 @@ public class SettingPanel extends JPanel {
         if (resList.size() == 0) {
             // System.out.println("res:" + resList);
             TallySystem.showInfoDialog("Incorrect old password, please try again.");
-            m_oldPwdText.setText("");
-            m_newPwdText.setText("");
-            m_confirmPwdText.setText("");
+            clearShowTxt();
             // return;
         } else {
             // change the password
@@ -122,27 +123,21 @@ public class SettingPanel extends JPanel {
             } else {
                 TallySystem.showInfoDialog("Password change succeed, please login again.");
                 Delegate.GetInstance().logout();
-                m_oldPwdText.setText("");
-                m_newPwdText.setText("");
-                m_confirmPwdText.setText("");
+                clearShowTxt();
                 m_controller.gotoLoginPanel();
             }
         }
         db.closeAll();
     }
-
-    void cancelClick() {
+    private  void clearShowTxt(){
         m_oldPwdText.setText("");
         m_newPwdText.setText("");
         m_confirmPwdText.setText("");
-        m_controller.gotoOperationPanel();
     }
 
-    boolean checkPsw(String psw) {
-        if (psw.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$")) {
-            return true;
-        }
-        return false;
+    void cancelClick() {
+        clearShowTxt();
+        m_controller.gotoOperationPanel();
     }
 
 }

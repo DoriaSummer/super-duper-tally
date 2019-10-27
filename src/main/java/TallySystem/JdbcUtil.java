@@ -12,7 +12,7 @@ public class JdbcUtil {
     private String m_driverAddress = "com.mysql.cj.jdbc.Driver";
     private String m_dbUrl = "jdbc:mysql://localhost:3306/VOTESYS?useSSL=false&serverTimezone=UTC";
     private String m_user = "root";
-    private String m_psw = "duper6@@";
+    private String m_pwd = "duper6@@";
     private static JdbcUtil g_instance = null;
     private Connection m_conn = null;
     private static final String S_SALT_KEY = "";
@@ -40,7 +40,7 @@ public class JdbcUtil {
             m_driverAddress = prop.getProperty("driver");
             m_dbUrl = prop.getProperty("url");
             m_user = prop.getProperty("user");
-            m_psw = prop.getProperty("psw");
+            m_pwd = prop.getProperty("pwd");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class JdbcUtil {
             }
             // connect to DB
             try {
-                m_conn = DriverManager.getConnection(m_dbUrl, m_user, m_psw);
+                m_conn = DriverManager.getConnection(m_dbUrl, m_user, m_pwd);
                 if (!m_conn.isClosed()) {
                     System.out.println("Connect db succeed");
                 }

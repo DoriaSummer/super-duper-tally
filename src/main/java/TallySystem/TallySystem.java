@@ -14,6 +14,7 @@ public class TallySystem implements TallyController {
 
     TallySystem() {
         initUI();
+        gotoPhysicalKeyPanel();
     }
 
     public void initUI() {
@@ -34,7 +35,7 @@ public class TallySystem implements TallyController {
         // initial with physical panel
         m_physicalKeyPanel = new PysicalKeyPanel(this);
         m_physicalKeyPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
-        m_physicalKeyPanel.showPanel();
+        m_physicalKeyPanel.setVisible(false);
 
         // login panel
         m_loginPanel = new LoginPanel(this);

@@ -66,11 +66,11 @@ public class LoginPanel extends JPanel {
         String password = new String(m_pwdText.getPassword());
 
         // validate input
-        if (!checkAccount(account)) {
+        if (!CommonUtil.CheckAccount(account)) {
             TallySystem.showErrorDialog("Account invalid");
             return;
         }
-        if (!checkPsw(password)) {
+        if (!CommonUtil.CheckPassword(password)) {
             TallySystem.showErrorDialog("Password invalid");
             return;
         }
@@ -103,25 +103,5 @@ public class LoginPanel extends JPanel {
             System.out.println("Quit confirm");
             System.exit(0);
         }
-    }
-
-    boolean checkAccount(String acc) {
-        if (acc.matches("^[a-zA-Z][a-zA-Z0-9_]{4,15}$")) {
-            String[] reserves = {"root", "daemon", "sync", "shutdown", "halt", "mail", "uucp", "operator", "games", "oprofile", "postgres", "mysql", "rpcuser", "apache", "Pegasus", "webalizer", "haldaemon", "vcsa", "avahi", "tcpdump", "sshd", "dbus", "postfix", "tomcat", "hsqldb", "dovecot", "nobody", "usbmuxd", "abrt", "dovenull", "pulse", "qpidd", "saslauth", "cimsrvr", "rtkit", "nfsnobody"};
-            for (String r : reserves) {
-                if (acc.equals(r)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    boolean checkPsw(String psw) {
-        if (psw.length() >= 8) {
-            return true;
-        }
-        return false;
     }
 }

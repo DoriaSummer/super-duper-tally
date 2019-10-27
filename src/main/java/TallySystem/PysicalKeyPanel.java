@@ -77,6 +77,7 @@ public class PysicalKeyPanel extends JPanel {
     }
 
     public void showPanel() {
+        m_msgLab.setText("Checking physical key!");
         m_confirmBtn.setVisible(false);
         m_exitBtn.setVisible(false);
         progressBar.setVisible(false);
@@ -86,9 +87,13 @@ public class PysicalKeyPanel extends JPanel {
 
         // Need better simulation
         String read = readFile("PhysicalKey.enc");
-        if(!read.equals("")) {
+        if(!"".equals(read)) {
             progressBar.setVisible(true);
-            loading();
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    loading();
+                }
+            });
         }
     }
 
@@ -116,6 +121,9 @@ public class PysicalKeyPanel extends JPanel {
     private static String readFile(String fileName) {
         String encoding = "UTF-8";
         File file = new File(fileName);
+        if (!file.exists()){
+            return "";
+        }
         Long filelength = file.length();
         byte[] filecontent = new byte[filelength.intValue()];
         try {
@@ -132,7 +140,7 @@ public class PysicalKeyPanel extends JPanel {
         } catch (UnsupportedEncodingException e) {
             System.err.println("The OS does not support " + encoding);
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
 
