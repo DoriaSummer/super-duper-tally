@@ -2,4 +2,3 @@ target
 src/test
 .idea
 db.properties
-PhysicalKey.enc
