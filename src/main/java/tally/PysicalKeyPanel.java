@@ -73,7 +73,7 @@ public class PysicalKeyPanel extends JPanel {
     void exitClick() {
         // End process
         int option = JOptionPane.showConfirmDialog(null, "Quit the system?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
-        if (option == 0){
+        if (option == 0) {
             System.out.println("Quit confirm");
             System.exit(0);
         }
@@ -89,15 +89,9 @@ public class PysicalKeyPanel extends JPanel {
         this.setVisible(true);
 
         PhysicalKeyVerification.setPhysicalKey(getClass().getClassLoader().getResource("PhysicalKey.enc").getFile());
-        try {
-            PhysicalKeyVerification.genKeyPair();
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | IOException e) {
-            e.printStackTrace();
-        }
+        PhysicalKeyVerification.genKeyPair();
 
-        // Need better simulation
-        String read = readFile("PhysicalKey.enc");
-        if(!"".equals(read)) {
+        if (PhysicalKeyVerification.verifySignature()) {
             progressBar.setVisible(true);
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -111,12 +105,12 @@ public class PysicalKeyPanel extends JPanel {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!isShowing()){
+                if (!isShowing()) {
                     return;
                 }
-                currentProgress+=100;
+                currentProgress += 100;
                 progressBar.setValue(currentProgress);
-                if (currentProgress >= PROGRESS_MAX){
+                if (currentProgress >= PROGRESS_MAX) {
                     System.out.println("Loading 5s ends");
                     m_msgLab.setText("Check physical key succeed! Press OK to login.");
                     m_confirmBtn.setVisible(true);
@@ -125,13 +119,13 @@ public class PysicalKeyPanel extends JPanel {
                     cancel();
                 }
             }
-        }, 0,100);
+        }, 0, 100);
     }
 
     private static String readFile(String fileName) {
         String encoding = "UTF-8";
         File file = new File(fileName);
-        if (!file.exists()){
+        if (!file.exists()) {
             return "";
         }
         Long filelength = file.length();
