@@ -71,6 +71,7 @@ public class SettingPanel extends JPanel {
             }
         });
         add(m_cancelBtn);
+        setVisible(false);
     }
 
     void confirmClick() {

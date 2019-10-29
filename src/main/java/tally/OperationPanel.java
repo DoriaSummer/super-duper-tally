@@ -12,6 +12,7 @@ public class OperationPanel extends JPanel {
     JButton m_validateBtn;
     JButton m_decryptBtn;
     JButton m_recountBtn;
+    JButton m_excludeBtn;
 
     JButton m_settingBtn;
     JButton m_logoutBtn;
@@ -49,6 +50,16 @@ public class OperationPanel extends JPanel {
         });
         add(m_decryptBtn);
 
+
+        m_excludeBtn = new JButton("Exclude");
+        m_excludeBtn.setBounds(190, 100, 80, 25);
+        m_excludeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                excludeClick();
+            }
+        });
+        add(m_excludeBtn);
+
         // Press recountBtn to operate recount (exclude a candidate and recount the votes)
         m_recountBtn = new JButton("Recount");
         m_recountBtn.setBounds(190, 100, 80, 25);
@@ -57,7 +68,7 @@ public class OperationPanel extends JPanel {
                 recountClick();
             }
         });
-        add(m_recountBtn);
+        //add(m_recountBtn);
 
         m_settingBtn = new JButton("Setting");
         m_settingBtn.setBounds(10, 145, 80, 25);
@@ -85,18 +96,26 @@ public class OperationPanel extends JPanel {
             }
         });
         add(m_exitBtn);
-
+        setVisible(false);
     }
-    public void validateClick(){
+
+    public void validateClick() {
         // call decrypt();
         TallySystem.showInfoDialog("Votes validate succeed");
     }
-    public void decryptClick(){
+
+    public void decryptClick() {
         TallySystem.showInfoDialog("Decryption succeed");
     }
-    public void recountClick(){
+
+    public void recountClick() {
         // call recount();
         TallySystem.showInfoDialog("Recount succeed");
+    }
+
+    public void excludeClick() {
+        System.out.println("excludeClick");
+        m_controller.gotoExcludePanel();
     }
 
     public void settingClick() {
@@ -107,7 +126,7 @@ public class OperationPanel extends JPanel {
     void exitClick() {
         // End process
         int option = JOptionPane.showConfirmDialog(null, "Quit the system?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
-        if (option == 0){
+        if (option == 0) {
             System.out.println("Quit confirm");
             System.exit(0);
         }
@@ -120,7 +139,7 @@ public class OperationPanel extends JPanel {
         m_controller.gotoPhysicalKeyPanel();
     }
 
-    public void showPanel(String userName){
+    public void showPanel(String userName) {
         m_welcomeLab.setText("Welcome, " + userName + "!");
         this.setVisible(true);
     }

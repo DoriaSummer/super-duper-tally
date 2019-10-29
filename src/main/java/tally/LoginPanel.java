@@ -59,6 +59,7 @@ public class LoginPanel extends JPanel {
             }
         });
         add(m_exitBtn);
+        setVisible(false);
     }
 
     void loginClick() {
@@ -89,6 +90,8 @@ public class LoginPanel extends JPanel {
         } else {
             TallySystem.showInfoDialog("Login succeed");
             Delegate.GetInstance().login("", account, "");
+            // set the user's state, need to be updated from DB
+            Delegate.GetInstance().setOwnState("SA");
             m_accText.setText("");
             m_pwdText.setText("");
             m_controller.gotoOperationPanel();

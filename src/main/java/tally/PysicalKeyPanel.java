@@ -61,6 +61,7 @@ public class PysicalKeyPanel extends JPanel {
         m_exitBtn.setVisible(false);
 
         t = new Timer();
+        setVisible(false);
     }
 
     void confirmClick() {

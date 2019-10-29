@@ -5,4 +5,5 @@ public interface TallyController {
     public void gotoLoginPanel();
     public void gotoPhysicalKeyPanel();
     public void gotoSettingPanel();
+    public void gotoExcludePanel();
 }

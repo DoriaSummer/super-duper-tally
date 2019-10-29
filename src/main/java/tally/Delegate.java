@@ -5,6 +5,8 @@ public class Delegate {
     private String delegateID = "";
     private String delegateName = "";
     private String delegatePwd = "";
+    private String ownState = ""; // the state that the delegate belongs
+
     private boolean isLogin = false;
 
     private Delegate() {
@@ -17,26 +19,38 @@ public class Delegate {
         return s_instance;
     }
 
-    public String getUserID(){
+    public String getUserID() {
         return delegateID;
     }
-    public String getUserName(){
+
+    public String getUserName() {
         return delegateName;
     }
-    public String getUserPsw(){
+
+    public String getUserPsw() {
         return delegatePwd;
     }
-    public boolean getIsLogin(){
+
+    public boolean getIsLogin() {
         return isLogin;
     }
 
-    public void login(String id, String acc, String pwd){
+    public String getOwnState() {
+        return ownState;
+    }
+
+    public void setOwnState(String value) {
+        ownState = value;
+    }
+
+    public void login(String id, String acc, String pwd) {
         delegateID = id;
         delegateName = acc;
         delegatePwd = pwd;
         isLogin = true;
     }
-    public void logout(){
+
+    public void logout() {
         isLogin = false;
         delegateID = "";
         delegateName = "";

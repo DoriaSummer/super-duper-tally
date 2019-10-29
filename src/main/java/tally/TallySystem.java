@@ -11,10 +11,12 @@ public class TallySystem implements TallyController {
     LoginPanel m_loginPanel;
     OperationPanel m_operationPanel;
     SettingPanel m_settingPanel;
+    ExcludePanel m_excludePanel;
 
     TallySystem() {
         initUI();
         gotoPhysicalKeyPanel();
+        // gotoExcludePanel();
     }
 
     public void initUI() {
@@ -35,31 +37,33 @@ public class TallySystem implements TallyController {
         // initial with physical panel
         m_physicalKeyPanel = new PysicalKeyPanel(this);
         m_physicalKeyPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
-        m_physicalKeyPanel.setVisible(false);
 
         // login panel
         m_loginPanel = new LoginPanel(this);
         m_loginPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
         m_loginPanel.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
-        m_loginPanel.setVisible(false);
 
         // operation panel
         m_operationPanel = new OperationPanel(this);
         m_operationPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
         m_operationPanel.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
-        m_operationPanel.setVisible(false);
 
         // setting panel
         m_settingPanel = new SettingPanel(this);
         m_settingPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
         m_settingPanel.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
-        m_settingPanel.setVisible(false);
+
+        // exclude panel
+        m_excludePanel = new ExcludePanel(this);
+        m_excludePanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
+        m_excludePanel.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
 
         // add panels
         m_mainFrame.add(m_physicalKeyPanel);
         m_mainFrame.add(m_loginPanel);
         m_mainFrame.add(m_operationPanel);
         m_mainFrame.add(m_settingPanel);
+        m_mainFrame.add(m_excludePanel);
 
         // show the window
         m_mainFrame.pack();
@@ -110,5 +114,10 @@ public class TallySystem implements TallyController {
         // Setting panel visible
         m_operationPanel.setVisible(false);
         m_settingPanel.setVisible(true);
+    }
+    @Override
+    public void gotoExcludePanel(){
+        m_operationPanel.setVisible(false);
+        m_excludePanel.showPanel();
     }
 }
