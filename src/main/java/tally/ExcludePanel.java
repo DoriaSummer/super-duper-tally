@@ -10,6 +10,10 @@ import java.util.Enumeration;
 
 public class ExcludePanel extends JPanel {
     TallyController m_controller;
+
+    JLabel m_canListLab;
+    JLabel m_canEclLab;
+
     JList m_totalList;
     JList m_selectList;
     DefaultListModel<ModelData> m_totalModel;
@@ -29,8 +33,16 @@ public class ExcludePanel extends JPanel {
         int halfFrameWidth = TallySystem.S_WIN_SIZE_WIDTH >> 1;
         int frameHeight = TallySystem.S_WIN_SIZE_HEIGHT - 20;
 
+        m_canListLab = new JLabel("All Candidates");
+        m_canListLab.setBounds(10, 10, 250, 25);
+        add(m_canListLab);
+
+        m_canEclLab = new JLabel("Candidates exclude");
+        m_canEclLab.setBounds(halfFrameWidth + 5, 10, 250, 25);
+        add(m_canEclLab);
+
         JScrollPane leftScrollP = new JScrollPane();
-        leftScrollP.setBounds(5, 5, halfFrameWidth - 10, frameHeight - 40);
+        leftScrollP.setBounds(5, 30, halfFrameWidth - 10, frameHeight - 60);
         add(leftScrollP);
         m_totalList = new JList();
         m_totalList.addListSelectionListener(new ListSelectionListener() {
@@ -43,7 +55,7 @@ public class ExcludePanel extends JPanel {
         leftScrollP.setViewportView(m_totalList);
 
         JScrollPane rightScrollP = new JScrollPane();
-        rightScrollP.setBounds(halfFrameWidth + 5, 5, halfFrameWidth - 10, frameHeight - 40);
+        rightScrollP.setBounds(halfFrameWidth + 5, 30, halfFrameWidth - 10, frameHeight - 60);
         add(rightScrollP);
         m_selectList = new JList();
         m_selectList.addListSelectionListener(new ListSelectionListener() {

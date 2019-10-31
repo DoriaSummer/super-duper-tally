@@ -22,7 +22,7 @@ public class OperationPanel extends JPanel {
         m_controller = c;
         setLayout(null);
 
-        m_welcomeLab = new JLabel();
+        m_welcomeLab = new JLabel("Welcome, " + Delegate.GetInstance().getUserName());
         m_welcomeLab.setBounds(10, 20, 250, 25);
         add(m_welcomeLab);
 
@@ -100,11 +100,12 @@ public class OperationPanel extends JPanel {
     }
 
     public void validateClick() {
-        // call decrypt();
+        // call validate();
         TallySystem.showInfoDialog("Votes validate succeed");
     }
 
     public void decryptClick() {
+        // call decrypt();
         TallySystem.showInfoDialog("Decryption succeed");
     }
 
