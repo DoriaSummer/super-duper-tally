@@ -1,4 +1,4 @@
-package tally;
+package tally.db;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;

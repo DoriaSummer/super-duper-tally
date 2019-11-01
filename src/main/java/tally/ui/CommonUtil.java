@@ -1,4 +1,4 @@
-package tally;
+package tally.ui;
 
 import java.io.File;
 

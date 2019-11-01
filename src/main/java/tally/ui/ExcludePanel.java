@@ -1,4 +1,6 @@
-package tally;
+package tally.ui;
+
+import tally.algo.Tally;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -34,15 +36,15 @@ public class ExcludePanel extends JPanel {
         int frameHeight = TallySystem.S_WIN_SIZE_HEIGHT - 20;
 
         m_canListLab = new JLabel("All Candidates");
-        m_canListLab.setBounds(10, 10, 250, 25);
+        m_canListLab.setBounds(10, 10, 180, 25);
         add(m_canListLab);
 
-        m_canEclLab = new JLabel("Candidates exclude");
-        m_canEclLab.setBounds(halfFrameWidth + 5, 10, 250, 25);
+        m_canEclLab = new JLabel("Candidates to be excluded");
+        m_canEclLab.setBounds(halfFrameWidth + 10, 10, 180, 25);
         add(m_canEclLab);
 
         JScrollPane leftScrollP = new JScrollPane();
-        leftScrollP.setBounds(5, 30, halfFrameWidth - 10, frameHeight - 60);
+        leftScrollP.setBounds(10, 40, halfFrameWidth - 20, frameHeight - 85);
         add(leftScrollP);
         m_totalList = new JList();
         m_totalList.addListSelectionListener(new ListSelectionListener() {
@@ -55,7 +57,7 @@ public class ExcludePanel extends JPanel {
         leftScrollP.setViewportView(m_totalList);
 
         JScrollPane rightScrollP = new JScrollPane();
-        rightScrollP.setBounds(halfFrameWidth + 5, 30, halfFrameWidth - 10, frameHeight - 60);
+        rightScrollP.setBounds(halfFrameWidth + 10, 40, halfFrameWidth - 20, frameHeight - 85);
         add(rightScrollP);
         m_selectList = new JList();
         m_selectList.addListSelectionListener(new ListSelectionListener() {
@@ -68,7 +70,7 @@ public class ExcludePanel extends JPanel {
         rightScrollP.setViewportView(m_selectList);
 
         m_confirmBtn = new JButton("Confirm");
-        m_confirmBtn.setBounds(10, frameHeight - 30, 80, 25);
+        m_confirmBtn.setBounds(10, frameHeight - 35, 80, 25);
         m_confirmBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 confirmClick();
@@ -77,7 +79,7 @@ public class ExcludePanel extends JPanel {
         add(m_confirmBtn);
 
         m_resetBtn = new JButton("Reset");
-        m_resetBtn.setBounds(100, frameHeight - 30, 80, 25);
+        m_resetBtn.setBounds(160, frameHeight - 35, 80, 25);
         m_resetBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 resetClick();
@@ -86,7 +88,7 @@ public class ExcludePanel extends JPanel {
         add(m_resetBtn);
 
         m_closeBtn = new JButton("Close");
-        m_closeBtn.setBounds(190, frameHeight - 30, 80, 25);
+        m_closeBtn.setBounds(310, frameHeight - 35, 80, 25);
         m_closeBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 closeClick();
@@ -134,6 +136,7 @@ public class ExcludePanel extends JPanel {
     }
 
     public void confirmClick() {
+
         boolean isUpdateDbSucceed = true;
         // TODO go to db to update data
 
@@ -142,6 +145,13 @@ public class ExcludePanel extends JPanel {
                 m_originList.remove(m_selectModel.get(i));
             }
             m_selectModel.clear();
+
+            int option = JOptionPane.showConfirmDialog(null, "Exclude succeed. Recount?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
+            if (option == 0) {
+                System.out.println("Recounting tally ...");
+                // If recount succeed
+                // System.out.println("Recount succeed");
+            }
         }
     }
 

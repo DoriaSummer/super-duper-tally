@@ -1,4 +1,4 @@
-package tally;
+package tally.ui;
 
 public class Delegate {
     private static Delegate s_instance = null;

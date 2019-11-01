@@ -1,4 +1,6 @@
-package tally;
+package tally.ui;
+
+import tally.db.JdbcUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

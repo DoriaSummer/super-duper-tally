@@ -1,4 +1,4 @@
-package tally;
+package tally.ui;
 
 public interface TallyController {
     public void gotoOperationPanel();

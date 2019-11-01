@@ -1,25 +1,27 @@
-package tally;
+package tally.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 public class TallySystem implements TallyController {
     static final int S_WIN_SIZE_WIDTH = 400;
     static final int S_WIN_SIZE_HEIGHT = 300;
     JFrame m_mainFrame;
-    PysicalKeyPanel m_physicalKeyPanel;
+    PhysicalKeyPanel m_physicalKeyPanel;
     LoginPanel m_loginPanel;
     OperationPanel m_operationPanel;
     SettingPanel m_settingPanel;
     ExcludePanel m_excludePanel;
 
-    TallySystem() {
+    TallySystem() throws InvalidKeySpecException, NoSuchAlgorithmException {
         initUI();
         gotoPhysicalKeyPanel();
         // gotoExcludePanel();
     }
 
-    public void initUI() {
+    public void initUI() throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         // new frame
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -35,7 +37,7 @@ public class TallySystem implements TallyController {
         m_mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // initial with physical panel
-        m_physicalKeyPanel = new PysicalKeyPanel(this);
+        m_physicalKeyPanel = new PhysicalKeyPanel(this);
         m_physicalKeyPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
 
         // login panel

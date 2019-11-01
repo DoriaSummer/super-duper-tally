@@ -1,8 +1,14 @@
-package tally;
+package tally.ui;
+
+import tally.algo.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 
 public class OperationPanel extends JPanel {
     TallyController m_controller;
@@ -18,7 +24,11 @@ public class OperationPanel extends JPanel {
     JButton m_logoutBtn;
     JButton m_exitBtn;
 
-    public OperationPanel(TallyController c) {
+    BallotPaper bp;
+    ArrayList<byte[]> evr;
+    Key key;
+
+    public OperationPanel(TallyController c) throws InvalidKeySpecException, NoSuchAlgorithmException {
         m_controller = c;
         setLayout(null);
 
@@ -35,7 +45,13 @@ public class OperationPanel extends JPanel {
         m_validateBtn.setBounds(10, 100, 80, 25);
         m_validateBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                validateClick();
+                try {
+                    validateClick();
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
             }
         });
         add(m_validateBtn);
@@ -49,7 +65,6 @@ public class OperationPanel extends JPanel {
             }
         });
         add(m_decryptBtn);
-
 
         m_excludeBtn = new JButton("Exclude");
         m_excludeBtn.setBounds(190, 100, 80, 25);
@@ -96,17 +111,35 @@ public class OperationPanel extends JPanel {
             }
         });
         add(m_exitBtn);
+
         setVisible(false);
     }
 
-    public void validateClick() {
-        // call validate();
+    public void validateClick() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        bp = new BallotPaper("SenateCandidates2016RandomOrder.csv", "SA");
+        evr = EncryptedVoteRecord.readEncryptedVotesFile("EncryptedVoteRecord.dat");
+        System.out.println("Read votes :" + evr.size());
+        key = CryptoEngine.getVotePrivateKey();
+
+        System.out.println("Verifying vote ...");
+        EncryptedVoteRecord.verifyEncryptedVotes(evr, key);
+        System.out.println("Successfully verified vote");
         TallySystem.showInfoDialog("Votes validate succeed");
     }
 
     public void decryptClick() {
-        // call decrypt();
-        TallySystem.showInfoDialog("Decryption succeed");
+        System.out.println("Decrypting vote ...");
+        ArrayList<Vote> votes = EncryptedVoteRecord.decryptVotes(evr, key, bp);
+        System.out.println("Successfully decrypted vote");
+        int option = JOptionPane.showConfirmDialog(null, "Decryption succeed. Tally the vote?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
+        if (option == 0) {
+            System.out.println("Starting tally ...");
+            Tally.ballotPaper = bp;
+            Tally.voteList = votes;
+            Tally.numCandidatesToElect = 6; //6 for half senate, 12 for full senate
+            Tally.tallyVotes();
+            System.out.println("Tally completed");
+        }
     }
 
     public void recountClick() {
@@ -115,7 +148,6 @@ public class OperationPanel extends JPanel {
     }
 
     public void excludeClick() {
-        System.out.println("excludeClick");
         m_controller.gotoExcludePanel();
     }
 

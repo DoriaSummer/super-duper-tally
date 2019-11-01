@@ -1,4 +1,4 @@
-package tally;
+package tally.db;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,6 +1,9 @@
-package tally;
+package tally.db;
+
+import tally.db.JdbcUtil;
+
 // Initial delegates data, must be deleted after use.
-public class TestWrite {
+public class AECInitWrite {
 
     public static void main(String[] args) {
 
@@ -16,10 +19,10 @@ public class TestWrite {
         int res = db.executeUpdate(createSqlStr, null);
 */
         String account1 = "Dumbledore";
-        String password1 = JdbcUtil.GenerateMd5("DumbledoreAccioData");
+        String password1 = JdbcUtil.GenerateMd5("DumbledoreAccioData6");
 
         String account2 = "McGonagall";
-        String password2 = JdbcUtil.GenerateMd5("McGonagallIncendio");
+        String password2 = JdbcUtil.GenerateMd5("McGonagallIncendio66");
 
         String sqlStr = "INSERT INTO delegate (delegate_id, delegate_name, delegate_pwd) VALUES (delegate_id, ?, ?);";
 
