@@ -36,6 +36,10 @@ public class Tally {
 	}
 	
 	static void log(String s) {
+		if (!cacheLogStr.isEmpty()){
+			TallySystem.PrintLog(cacheLogStr);
+			cacheLogStr = "";
+		}
 		TallySystem.PrintLog(s);
 		tallyLog.add(s);
 		boolean showLog = true;
@@ -43,7 +47,18 @@ public class Tally {
 			System.out.println(s);
 		}
 	}
-	
+	static String cacheLogStr = "";
+	static void logByCache(String s) {
+		if (!cacheLogStr.isEmpty()){
+			cacheLogStr = cacheLogStr+"\n";
+		}
+		cacheLogStr = cacheLogStr+s;
+		tallyLog.add(s);
+		boolean showLog = true;
+		if (showLog) {
+			System.out.println(s);
+		}
+	}
 	// check all votes to see if their current preference has been excluded - if so, go to next pref
 	public static void updatePreferences() {
 		for (Vote v : voteList) {
@@ -77,8 +92,8 @@ public class Tally {
 			double quota = 1 + Math.floor(((double) voteList.size())/(1.0+numCandidatesToElect));
 			log("Quota is " + quota);
 			while (numElected < numCandidatesToElect) {
-				log("Tally round " + round);
-				log("elected " + numElected + " of " + numCandidatesToElect);
+				logByCache("Tally round " + round);
+				logByCache("elected " + numElected + " of " + numCandidatesToElect);
 				round++;
 				// do tally of current vote
 				Map<Integer, Double> tally = Tally.doTally();
@@ -88,9 +103,9 @@ public class Tally {
 				// if the number of candidates remaining in the tally is equal
 				// to the number we still need to elect, then elect them all and stop!
 				if (tally.keySet().size() == (numCandidatesToElect-numElected)) {
-					log("Electing all remaining candidates:");
+					logByCache("Electing all remaining candidates:");
 					for (Integer c: tally.keySet()) {
-						log("Elected candidate " + ballotPaper.getCandidateById(c) + " with " + tally.get(c) + " votes");
+						logByCache("Elected candidate " + ballotPaper.getCandidateById(c) + " with " + tally.get(c) + " votes");
 						numElected++;
 						electedCandidates.add(c);
 					}
@@ -115,7 +130,7 @@ public class Tally {
 				// if the largest vote getter got more than a quota,
 				// elect them and transfer the remainder of their votes
 				if (largestVote >= quota) {
-					log("Elected candidate " + ballotPaper.getCandidateById(mostPopularCandidate) + " with " + largestVote + " votes");
+					logByCache("Elected candidate " + ballotPaper.getCandidateById(mostPopularCandidate) + " with " + largestVote + " votes");
 					ballotPaper.excludedCandidates.add(mostPopularCandidate);
 					numElected++;
 					electedCandidates.add(mostPopularCandidate);
@@ -129,7 +144,7 @@ public class Tally {
 					continue;
 				}
 				// otherwise, exclude the lowest vote getter and transfer their votes
-				log("Excluded candidate " + ballotPaper.getCandidateById(leastPopularCandidate) + " with " + smallestVote + " votes");
+				logByCache("Excluded candidate " + ballotPaper.getCandidateById(leastPopularCandidate) + " with " + smallestVote + " votes");
 				ballotPaper.excludedCandidates.add(leastPopularCandidate);
 				updatePreferences();
 			}
@@ -148,12 +163,14 @@ public class Tally {
 	
 	// utility function for debugging
 	public static void printTally(Map<Integer, Double> tally) throws CandidateNotFoundException {
-		log("Votes: Uid (Candidate Name)");
-		log("============================");
+		logByCache("Votes: Uid (Candidate Name)");
+		logByCache("============================");
 		List<Integer> keySet = new ArrayList<Integer>(tally.keySet());
 		Collections.sort(keySet);
+		int count = 0;
 		for (Integer i : keySet) {
-			log(tally.get(i) + " : " + i + " (" + ballotPaper.getCandidateById(i) + ")");
+			count++;
+			logByCache(tally.get(i) + " : " + i + " (" + ballotPaper.getCandidateById(i) + ")");
 		}
 	}
 	

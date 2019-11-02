@@ -178,6 +178,10 @@ public class OperationPanel extends JPanel {
 
     public void recountClick() {
         // call recount();
+        if (Tally.ballotPaper == null){
+            TallySystem.showInfoDialog("Please decrypt first.");
+            return;
+        }
         Thread newTread = new Thread(() -> {
             Tally.tallyVotes();
         });
