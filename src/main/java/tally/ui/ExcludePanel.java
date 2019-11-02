@@ -1,5 +1,8 @@
 package tally.ui;
 
+import tally.algo.BallotPaper;
+import tally.algo.Candidate;
+import tally.algo.Party;
 import tally.algo.Tally;
 
 import javax.swing.*;
@@ -9,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 public class ExcludePanel extends JPanel {
     TallyController m_controller;
@@ -47,12 +51,7 @@ public class ExcludePanel extends JPanel {
         leftScrollP.setBounds(10, 40, halfFrameWidth - 20, frameHeight - 85);
         add(leftScrollP);
         m_totalList = new JList();
-        m_totalList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                selectTotalItem(listSelectionEvent);
-            }
-        });
+        m_totalList.addListSelectionListener(listSelectionEvent -> selectTotalItem(listSelectionEvent));
         m_totalList.setModel(m_totalModel);
         leftScrollP.setViewportView(m_totalList);
 
@@ -60,40 +59,24 @@ public class ExcludePanel extends JPanel {
         rightScrollP.setBounds(halfFrameWidth + 10, 40, halfFrameWidth - 20, frameHeight - 85);
         add(rightScrollP);
         m_selectList = new JList();
-        m_selectList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                selectSelectItem(listSelectionEvent);
-            }
-        });
+        m_selectList.addListSelectionListener(listSelectionEvent -> selectSelectItem(listSelectionEvent));
         m_selectList.setModel(m_selectModel);
         rightScrollP.setViewportView(m_selectList);
 
         m_confirmBtn = new JButton("Confirm");
         m_confirmBtn.setBounds(10, frameHeight - 35, 80, 25);
-        m_confirmBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                confirmClick();
-            }
-        });
+        m_confirmBtn.addActionListener(actionEvent -> confirmClick());
         add(m_confirmBtn);
 
         m_resetBtn = new JButton("Reset");
         m_resetBtn.setBounds(160, frameHeight - 35, 80, 25);
-        m_resetBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                resetClick();
-            }
-        });
+        m_resetBtn.addActionListener(actionEvent -> resetClick());
         add(m_resetBtn);
 
         m_closeBtn = new JButton("Close");
         m_closeBtn.setBounds(310, frameHeight - 35, 80, 25);
-        m_closeBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                closeClick();
-            }
-        });
+        m_closeBtn.addActionListener(actionEvent -> closeClick());
+
         add(m_closeBtn);
         setVisible(false);
     }
@@ -139,16 +122,27 @@ public class ExcludePanel extends JPanel {
 
         boolean isUpdateDbSucceed = true;
         // TODO go to db to update data
+        List<Integer> excludeIdList = new ArrayList<>();
+        Enumeration<ModelData> modelEnum = m_selectModel.elements();
+        while (modelEnum.hasMoreElements()) {
+            ModelData tempData = modelEnum.nextElement();
+            excludeIdList.add(Integer.parseInt(tempData.id));
+        }
+        Tally.setExcludedCandidates(excludeIdList);
 
-        if (isUpdateDbSucceed){
-            for (int i = 0; i < m_selectModel.size(); i++){
+        if (isUpdateDbSucceed) {
+            for (int i = 0; i < m_selectModel.size(); i++) {
                 m_originList.remove(m_selectModel.get(i));
             }
             m_selectModel.clear();
 
             int option = JOptionPane.showConfirmDialog(null, "Exclude succeed. Recount?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
             if (option == 0) {
+                closeClick();
                 System.out.println("Recounting tally ...");
+                if (Tally.ballotPaper != null) {
+                    Tally.tallyVotes();
+                }
                 // If recount succeed
                 // System.out.println("Recount succeed");
             }
@@ -157,7 +151,7 @@ public class ExcludePanel extends JPanel {
 
     public void resetClick() {
         m_totalModel.clear();
-        for (ModelData data : m_originList){
+        for (ModelData data : m_originList) {
             m_totalModel.addElement(data);
         }
         m_selectModel.clear();
@@ -177,14 +171,16 @@ public class ExcludePanel extends JPanel {
 
     public void loadData() {
         // TODO get data from DB
-
-        m_originList.add(new ModelData(0, "1111","1111"));
-        m_originList.add(new ModelData(0, "2222","2222"));
-        m_originList.add(new ModelData(0, "3333","3333"));
-        m_originList.add(new ModelData(0, "4444","4444"));
-        m_originList.add(new ModelData(0, "5555","5555"));
-
-        for (ModelData data : m_originList){
+        BallotPaper bp = Tally.ballotPaper;
+        for (Party p : bp.partyList) {
+            for (Candidate c : p.candidates) {
+                m_originList.add(new ModelData(c.uid, c.uid.toString(), c.candidateName));
+            }
+        }
+        for (Candidate v : bp.ungroupedCandidates) {
+            m_originList.add(new ModelData(v.uid, v.uid.toString(), v.candidateName));
+        }
+        for (ModelData data : m_originList) {
             m_totalModel.addElement(data);
         }
         m_totalList.updateUI();

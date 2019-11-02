@@ -1,9 +1,11 @@
 package tally.ui;
 
+import tally.algo.BallotPaper;
+
 public interface TallyController {
-    public void gotoOperationPanel();
-    public void gotoLoginPanel();
-    public void gotoPhysicalKeyPanel();
-    public void gotoSettingPanel();
-    public void gotoExcludePanel();
+    void gotoOperationPanel();
+    void gotoLoginPanel();
+    void gotoPhysicalKeyPanel();
+    void gotoSettingPanel();
+    void gotoExcludePanel();
 }

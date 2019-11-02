@@ -26,36 +26,42 @@ public class PhysicalKeyPanel extends JPanel {
         m_controller = c;
         // setLayout(new FlowLayout(FlowLayout.LEADING, 5,5));
         setLayout(null);
+        JPanel containPanel = new JPanel();
+        containPanel.setLayout(null);
+        int containPaneHalfWidth = 160;
+        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-containPaneHalfWidth, 50, containPaneHalfWidth<<1, 100);
+
         m_msgLab = new JLabel("Checking physical key!");
-        m_msgLab.setBounds(10, 20, 350, 25);
-        add(m_msgLab);
+        m_msgLab.setHorizontalAlignment(SwingConstants.CENTER);
+        m_msgLab.setBounds(0, 10, containPaneHalfWidth<<1, 30);
+        containPanel.add(m_msgLab);
 
         progressBar = new JProgressBar(PROGRESS_MIN, PROGRESS_MAX);
         progressBar.setValue(currentProgress);
         progressBar.setStringPainted(true);
-        progressBar.setBounds(10, 55, 160, 30);
-        add(progressBar);
+        progressBar.setBounds(containPaneHalfWidth-80, 50, 160, 30);
+        containPanel.add(progressBar);
 
         m_confirmBtn = new JButton("OK");
-        m_confirmBtn.setBounds(10, 55, 80, 25);
+        m_confirmBtn.setBounds(containPaneHalfWidth-100, 50, 80, 30);
         m_confirmBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 confirmClick();
             }
         });
-        add(m_confirmBtn);
+        containPanel.add(m_confirmBtn);
         m_confirmBtn.setVisible(false);
 
         m_exitBtn = new JButton("Exit");
-        m_exitBtn.setBounds(100, 55, 80, 25);
+        m_exitBtn.setBounds(containPaneHalfWidth+20, 50, 80, 30);
         m_exitBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 exitClick();
             }
         });
-        add(m_exitBtn);
+        containPanel.add(m_exitBtn);
         m_exitBtn.setVisible(false);
-
+        add(containPanel);
         t = new Timer();
         setVisible(false);
     }

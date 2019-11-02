@@ -24,24 +24,28 @@ public class LoginPanel extends JPanel {
         m_controller = c;
         setLayout(null);
         m_msgLab = new JLabel("Welcome to Super-duper Tally System!");
+        JPanel containPanel = new JPanel();
+        containPanel.setLayout(null);
+        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-125, 50, 250, 150);
         m_msgLab.setBounds(10, 20, 250, 25);
-        add(m_msgLab);
+        m_msgLab.setHorizontalAlignment(SwingConstants.CENTER);
+        containPanel.add(m_msgLab);
 
         m_account = new JLabel("Account: ");
         m_account.setBounds(10, 50, 80, 25);
-        add(m_account);
+        containPanel.add(m_account);
 
         m_accText = new JTextField(10);
         m_accText.setBounds(120, 50, 100, 25);
-        add(m_accText);
+        containPanel.add(m_accText);
 
         m_password = new JLabel("Password: ");
         m_password.setBounds(10, 80, 80, 25);
-        add(m_password);
+        containPanel.add(m_password);
 
         m_pwdText = new JPasswordField(10);
         m_pwdText.setBounds(120, 80, 100, 25);
-        add(m_pwdText);
+        containPanel.add(m_pwdText);
 
 
         m_loginBtn = new JButton("Login");
@@ -51,7 +55,7 @@ public class LoginPanel extends JPanel {
                 loginClick();
             }
         });
-        add(m_loginBtn);
+        containPanel.add(m_loginBtn);
 
         m_exitBtn = new JButton("Exit");
         m_exitBtn.setBounds(140, 110, 80, 25);
@@ -60,7 +64,8 @@ public class LoginPanel extends JPanel {
                 exitClick();
             }
         });
-        add(m_exitBtn);
+        containPanel.add(m_exitBtn);
+        add(containPanel);
         setVisible(false);
     }
 

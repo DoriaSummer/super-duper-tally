@@ -1,13 +1,17 @@
 package tally.ui;
 
+import tally.algo.BallotPaper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public class TallySystem implements TallyController {
-    static final int S_WIN_SIZE_WIDTH = 400;
-    static final int S_WIN_SIZE_HEIGHT = 300;
+    static final int S_WIN_SIZE_WIDTH = 800;
+    static final int S_WIN_SIZE_HEIGHT = 600;
+
+    private static TallySystem s_instance;
     JFrame m_mainFrame;
     PhysicalKeyPanel m_physicalKeyPanel;
     LoginPanel m_loginPanel;
@@ -15,13 +19,22 @@ public class TallySystem implements TallyController {
     SettingPanel m_settingPanel;
     ExcludePanel m_excludePanel;
 
-    TallySystem() throws InvalidKeySpecException, NoSuchAlgorithmException {
+    private TallySystem() {
         initUI();
-        gotoPhysicalKeyPanel();
-        // gotoExcludePanel();
     }
 
-    public void initUI() throws InvalidKeySpecException, NoSuchAlgorithmException {
+    static TallySystem GetInstance(){
+        if (s_instance == null){
+            s_instance = new TallySystem();
+        }
+        return s_instance;
+    }
+
+    public static void Show(){
+        GetInstance().gotoPhysicalKeyPanel();
+    }
+
+    public void initUI() {
 
         // new frame
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -46,7 +59,13 @@ public class TallySystem implements TallyController {
         m_loginPanel.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
 
         // operation panel
-        m_operationPanel = new OperationPanel(this);
+        try {
+            m_operationPanel = new OperationPanel(this);
+        }catch (InvalidKeySpecException e){
+
+        }catch (NoSuchAlgorithmException e){
+
+        }
         m_operationPanel.setBounds(0, 0, S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT);
         m_operationPanel.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
 
@@ -81,6 +100,9 @@ public class TallySystem implements TallyController {
     public static void showErrorDialog(String msg) {
         JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
 
+    }
+    public static void PrintLog(String log){
+        GetInstance().m_operationPanel.printLog(log);
     }
 
     @Override

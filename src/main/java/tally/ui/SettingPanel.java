@@ -27,33 +27,36 @@ public class SettingPanel extends JPanel {
 
         m_controller = c;
         setLayout(null);
+        JPanel containPanel = new JPanel();
+        containPanel.setLayout(null);
+        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-160, 50, 320, 250);
         m_msgLab = new JLabel("Change password");
         m_msgLab.setBounds(10, 20, 250, 25);
-        add(m_msgLab);
+        containPanel.add(m_msgLab);
 
         m_oldPwdLab = new JLabel("Please enter old password: ");
         m_oldPwdLab.setBounds(10, 50, 200, 25);
-        add(m_oldPwdLab);
+        containPanel.add(m_oldPwdLab);
 
         m_oldPwdText = new JPasswordField(10);
         m_oldPwdText.setBounds(220, 50, 100, 25);
-        add(m_oldPwdText);
+        containPanel.add(m_oldPwdText);
 
         m_newPwdLab = new JLabel("Please enter new password: ");
         m_newPwdLab.setBounds(10, 80, 200, 25);
-        add(m_newPwdLab);
+        containPanel.add(m_newPwdLab);
 
         m_newPwdText = new JPasswordField(10);
         m_newPwdText.setBounds(220, 80, 100, 25);
-        add(m_newPwdText);
+        containPanel.add(m_newPwdText);
 
         m_confirmPwdLab = new JLabel("Please confirm new password: ");
         m_confirmPwdLab.setBounds(10, 110, 200, 25);
-        add(m_confirmPwdLab);
+        containPanel.add(m_confirmPwdLab);
 
         m_confirmPwdText = new JPasswordField(10);
         m_confirmPwdText.setBounds(220, 110, 100, 25);
-        add(m_confirmPwdText);
+        containPanel.add(m_confirmPwdText);
 
 
         m_confirmBtn = new JButton("Confirm");
@@ -63,7 +66,7 @@ public class SettingPanel extends JPanel {
                 confirmClick();
             }
         });
-        add(m_confirmBtn);
+        containPanel.add(m_confirmBtn);
 
         m_cancelBtn = new JButton("Cancel");
         m_cancelBtn.setBounds(140, 150, 80, 25);
@@ -72,7 +75,8 @@ public class SettingPanel extends JPanel {
                 cancelClick();
             }
         });
-        add(m_cancelBtn);
+        containPanel.add(m_cancelBtn);
+        add(containPanel);
         setVisible(false);
     }
 
