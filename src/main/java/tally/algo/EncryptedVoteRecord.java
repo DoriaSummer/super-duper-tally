@@ -1,5 +1,7 @@
 package tally.algo;
 
+import tally.ui.TallySystem;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -180,7 +182,7 @@ public class EncryptedVoteRecord {
 			}
 			prevTime = bytesToLong(thisTimeBytes);
 			if (i%100 == 0) {
-				System.out.println("Verified " + i + " of " + votes.size());
+				log("Verified " + i + " of " + votes.size());
 			}
 		}
 		return true;
@@ -230,9 +232,13 @@ public class EncryptedVoteRecord {
 			Vote v = new Vote(voteBytes, ballotPaper);
 			votes.add(v);
 			if (i%100 == 0) {
-				System.out.println("Decrypted " + i + " of " + encryptedVotes.size());
+				log("Decrypted " + i + " of " + encryptedVotes.size());
 			}
 		}
 		return votes;
+	}
+	static void log(String log){
+		TallySystem.PrintLog(log);
+		System.out.println(log);
 	}
 }

@@ -1,5 +1,7 @@
 package tally.algo;
 
+import tally.ui.TallySystem;
+
 import java.util.*;
 
 public class Tally {
@@ -34,6 +36,7 @@ public class Tally {
 	}
 	
 	static void log(String s) {
+		TallySystem.PrintLog(s);
 		tallyLog.add(s);
 		boolean showLog = true;
 		if (showLog) {
@@ -144,8 +147,8 @@ public class Tally {
 	
 	// utility function for debugging
 	public static void printTally(Map<Integer, Double> tally) throws CandidateNotFoundException {
-		System.out.println("Votes: Uid (Candidate Name)");
-		System.out.println("============================");
+		log("Votes: Uid (Candidate Name)");
+		log("============================");
 		List<Integer> keySet = new ArrayList<Integer>(tally.keySet());
 		Collections.sort(keySet);
 		for (Integer i : keySet) {
