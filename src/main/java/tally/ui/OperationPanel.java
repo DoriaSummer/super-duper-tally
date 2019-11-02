@@ -33,7 +33,7 @@ public class OperationPanel extends JPanel {
         setLayout(null);
         JPanel containPanel = new JPanel();
         containPanel.setLayout(null);
-        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-150, 10, 300, 150);
+        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-150, 10, 300, 200);
 
         m_welcomeLab = new JLabel("Welcome, " + Delegate.GetInstance().getUserName());
         m_welcomeLab.setHorizontalAlignment(SwingConstants.CENTER);
@@ -82,13 +82,13 @@ public class OperationPanel extends JPanel {
 
         // Press recountBtn to operate recount (exclude a candidate and recount the votes)
         m_recountBtn = new JButton("Recount");
-        m_recountBtn.setBounds(190, 80, 80, 25);
+        m_recountBtn.setBounds(10, 150, 80, 25);
         m_recountBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 recountClick();
             }
         });
-        //add(m_recountBtn);
+        containPanel.add(m_recountBtn);
 
         m_settingBtn = new JButton("Setting");
         m_settingBtn.setBounds(10, 120, 80, 25);
@@ -160,13 +160,13 @@ public class OperationPanel extends JPanel {
         }
         m_logPanel.setText("");
         printLog("Decrypting vote ...");
-        BallotPaper bp = new BallotPaper("SenateCandidates2016RandomOrder.csv", state);
-        Thread validateTread = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
+                BallotPaper bp = new BallotPaper("SenateCandidates2016RandomOrder.csv", "SA");
+                Tally.ballotPaper = bp;
                 ArrayList<Vote> votes = EncryptedVoteRecord.decryptVotes(evr, key, bp);
                 printLog("Successfully decrypted vote");
-                Tally.ballotPaper = bp;
                 Tally.voteList = votes;
                 Tally.numCandidatesToElect = 6; //6 for half senate, 12 for full senate
                 int option = JOptionPane.showConfirmDialog(null, "Decryption succeed. Tally the vote?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
@@ -177,19 +177,12 @@ public class OperationPanel extends JPanel {
                     printLog("Tally completed");
                 }
             }
-        });
-        validateTread.start();
+        }).start();
     }
 
     public void recountClick() {
         // call recount();
-        if (Tally.ballotPaper == null){
-            TallySystem.showInfoDialog("Please decrypt first.");
-        }else{
-            printLog("Starting tally ...");
-            Tally.tallyVotes();
-            printLog("Tally completed");  }
-//        TallySystem.showInfoDialog("Recount succeed");
+        recount();
     }
 
     public void excludeClick() {
@@ -222,7 +215,26 @@ public class OperationPanel extends JPanel {
         Tally.ballotPaper = null;
         m_controller.gotoPhysicalKeyPanel();
     }
-
+    public void recount(){
+        Thread newTread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                printLog("Starting tally ...");
+                Tally.tallyVotes();
+                printLog("Tally completed");
+            }
+        });
+        newTread.start();
+        /**
+         *
+         if (Tally.ballotPaper != null) {
+         for (Vote v : Tally.voteList){
+         v.isExhausted = false;
+         }
+         Tally.tallyVotes();
+         }
+         */
+    }
     public void showPanel(String userName) {
         m_welcomeLab.setText("Welcome, " + userName + "!");
         this.setVisible(true);

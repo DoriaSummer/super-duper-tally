@@ -1,9 +1,6 @@
 package tally.ui;
 
-import tally.algo.BallotPaper;
-import tally.algo.Candidate;
-import tally.algo.Party;
-import tally.algo.Tally;
+import tally.algo.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -140,9 +137,7 @@ public class ExcludePanel extends JPanel {
             if (option == 0) {
                 closeClick();
                 System.out.println("Recounting tally ...");
-                if (Tally.ballotPaper != null) {
-                    Tally.tallyVotes();
-                }
+                m_controller.tallyVotes();
                 // If recount succeed
                 // System.out.println("Recount succeed");
             }

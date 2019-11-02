@@ -8,4 +8,6 @@ public interface TallyController {
     void gotoPhysicalKeyPanel();
     void gotoSettingPanel();
     void gotoExcludePanel();
+
+    void tallyVotes();
 }

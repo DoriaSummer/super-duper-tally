@@ -26,7 +26,7 @@ public class LoginPanel extends JPanel {
         m_msgLab = new JLabel("Welcome to Super-duper Tally System!");
         JPanel containPanel = new JPanel();
         containPanel.setLayout(null);
-        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-125, 50, 250, 150);
+        containPanel.setBounds((TallySystem.S_WIN_SIZE_WIDTH>>1)-140, 50, 280, 150);
         m_msgLab.setBounds(10, 20, 250, 25);
         m_msgLab.setHorizontalAlignment(SwingConstants.CENTER);
         containPanel.add(m_msgLab);

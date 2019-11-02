@@ -16,6 +16,10 @@ import java.util.Random;
 @SuppressWarnings("unused")
 public class Vote {
 	public enum voteTypes {ABOVE_LINE, BELOW_LINE, NOT_DEFINED};
+	private voteTypes oriVoteType;
+	private int[] oriPreferencesAbove;
+	private int[] oriPreferencesBelow;
+
 	public voteTypes voteType;
 	public int[] preferencesAbove;
 	public int[] preferencesBelow;
@@ -35,6 +39,16 @@ public class Vote {
 		preferencesAbove = new int[0];
 		preferencesBelow = new int[0];
 		isExhausted = false;
+
+		this.oriVoteType = this.voteType;
+		this.oriPreferencesAbove = new int[this.preferencesAbove.length];
+		for (int i = 0; i < this.preferencesAbove.length; i++) {
+			this.oriPreferencesAbove[i] = this.preferencesAbove[i];
+		}
+		this.oriPreferencesBelow = new int[this.preferencesBelow.length];
+		for (int i = 0; i < this.preferencesBelow.length; i++) {
+			this.oriPreferencesBelow[i] = this.preferencesBelow[i];
+		}
 	}
 
 	// constructor for Vote from encrypted vote
@@ -66,8 +80,31 @@ public class Vote {
 			this.voteType = voteTypes.NOT_DEFINED;
 		}
 		isExhausted = false;
-	}
 
+		this.oriVoteType = this.voteType;
+		this.oriPreferencesAbove = new int[this.preferencesAbove.length];
+		for (int i = 0; i < this.preferencesAbove.length; i++) {
+			this.oriPreferencesAbove[i] = this.preferencesAbove[i];
+		}
+		this.oriPreferencesBelow = new int[this.preferencesBelow.length];
+		for (int i = 0; i < this.preferencesBelow.length; i++) {
+			this.oriPreferencesBelow[i] = this.preferencesBelow[i];
+		}
+	}
+	public void reset(){
+		voteType = oriVoteType;
+		preferencesAbove = new int[oriPreferencesAbove.length];
+		for (int i = 0; i < oriPreferencesAbove.length; i++) {
+			preferencesAbove[i] = oriPreferencesAbove[i];
+		}
+		preferencesBelow = new int[oriPreferencesBelow.length];;
+		for (int i = 0; i < oriPreferencesBelow.length; i++) {
+			preferencesBelow[i] = oriPreferencesBelow[i];
+		}
+		isExhausted = false;
+		currentPreference = 0;
+		transferValue = 1.0;
+	}
 	@Override
 	public String toString() {
 		String str = "";
@@ -185,7 +222,7 @@ public class Vote {
 	
 	// convert above line votes to below line votes
 	public void convertToBelowLineVote() throws PartyNotFoundException {
-		currentPreference = 0;
+		reset();
 		if (voteType == voteTypes.NOT_DEFINED) {
 			convertedPreferenceBelowLine = new int[1];
 			convertedPreferenceBelowLine[0] = 0;

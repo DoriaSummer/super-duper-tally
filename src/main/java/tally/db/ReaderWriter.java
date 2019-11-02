@@ -30,7 +30,7 @@ public class ReaderWriter {
         JdbcUtil db = JdbcUtil.GetInstance();
 
         String sqlStr = "DROP TABLE IF EXISTS candidate";
-        db.executeUpdate(sqlStr, null);
+        db.executeUpdate(sqlStr);
 
         sqlStr = "CREATE TABLE IF NOT EXISTS candidate (" +
                 "id INT NOT NULL AUTO_INCREMENT," +
@@ -40,7 +40,7 @@ public class ReaderWriter {
                 "state VARCHAR(15) NULL," +
                 "PRIMARY KEY (id)," +
                 "UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE);";
-        int res = db.executeUpdate(sqlStr, null);
+        int res = db.executeUpdate(sqlStr);
         System.out.println("res:" + res);
 
         sqlStr = "INSERT INTO candidate (id, surname, firstname, party, state) VALUES (id, ?, ?);";
@@ -48,7 +48,7 @@ public class ReaderWriter {
         System.out.println("res:" + res);
 
         sqlStr = "SELECT * FROM candidate;";
-        List<Map<String, Object>> resList = db.executeQuery(sqlStr, null);
+        List<Map<String, Object>> resList = db.executeQuery(sqlStr);
         if (resList != null) {
             System.out.println("res:" + resList);
         }
@@ -61,7 +61,7 @@ public class ReaderWriter {
         JdbcUtil db = JdbcUtil.GetInstance();
 
         String sqlStr = "DROP TABLE IF EXISTS candidate";
-        db.executeUpdate(sqlStr, null);
+        db.executeUpdate(sqlStr);
 
         sqlStr = "CREATE TABLE IF NOT EXISTS candidate (" +
                 "id INT NOT NULL AUTO_INCREMENT," +
@@ -71,7 +71,7 @@ public class ReaderWriter {
                 "state VARCHAR(15) NULL," +
                 "PRIMARY KEY (id)," +
                 "UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE);";
-        int res = db.executeUpdate(sqlStr, null);
+        int res = db.executeUpdate(sqlStr);
         System.out.println("res:" + res);
 
         sqlStr = "INSERT INTO candidate (id, state, party, surname, firstname) VALUES (id, ?, ?, ?, ?);";
@@ -86,7 +86,7 @@ public class ReaderWriter {
         System.out.println("res:" + res);
 
         sqlStr = "SELECT * FROM candidate;";
-        List<Map<String, Object>> resList = db.executeQuery(sqlStr, null);
+        List<Map<String, Object>> resList = db.executeQuery(sqlStr);
         if (resList != null) {
             System.out.println("res:" + resList);
         }

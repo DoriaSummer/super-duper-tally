@@ -59,6 +59,8 @@ public class Tally {
 		try {
 			// convert preferences to below line
 			log("Convert preference to below line");
+			electedCandidates.clear();
+			ballotPaper.excludedCandidates.clear();
 			for (Vote v : voteList) {
 				v.convertToBelowLineVote();
 			}
