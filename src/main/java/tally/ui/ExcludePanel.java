@@ -137,7 +137,10 @@ public class ExcludePanel extends JPanel {
             if (option == 0) {
                 closeClick();
                 System.out.println("Recounting tally ...");
-                m_controller.tallyVotes();
+                Thread newTread = new Thread(() -> {
+                    Tally.tallyVotes();
+                });
+                newTread.start();
                 // If recount succeed
                 // System.out.println("Recount succeed");
             }

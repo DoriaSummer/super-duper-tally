@@ -72,7 +72,7 @@ public class OperationPanel extends JPanel {
         containPanel.add(m_decryptBtn);
 
         m_excludeBtn = new JButton("Exclude");
-        m_excludeBtn.setBounds(190, 80, 80, 25);
+        m_excludeBtn.setBounds(10, 120, 80, 25);
         m_excludeBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 excludeClick();
@@ -81,8 +81,9 @@ public class OperationPanel extends JPanel {
         containPanel.add(m_excludeBtn);
 
         // Press recountBtn to operate recount (exclude a candidate and recount the votes)
-        m_recountBtn = new JButton("Recount");
-        m_recountBtn.setBounds(10, 150, 80, 25);
+        m_recountBtn = new JButton("Tally");
+        //m_recountBtn.setBounds(10, 150, 80, 25);
+        m_recountBtn.setBounds(190, 80, 80, 25);
         m_recountBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 recountClick();
@@ -91,7 +92,7 @@ public class OperationPanel extends JPanel {
         containPanel.add(m_recountBtn);
 
         m_settingBtn = new JButton("Setting");
-        m_settingBtn.setBounds(10, 120, 80, 25);
+        m_settingBtn.setBounds(100, 120, 80, 25);
         m_settingBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 settingClick();
@@ -100,7 +101,7 @@ public class OperationPanel extends JPanel {
         containPanel.add(m_settingBtn);
 
         m_logoutBtn = new JButton("Logout");
-        m_logoutBtn.setBounds(100, 120, 80, 25);
+        m_logoutBtn.setBounds(190, 120, 80, 25);
         m_logoutBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 logoutClick();
@@ -115,7 +116,7 @@ public class OperationPanel extends JPanel {
                 exitClick();
             }
         });
-        containPanel.add(m_exitBtn);
+        //containPanel.add(m_exitBtn);
 
         scrollContainP = new JScrollPane();
         scrollContainP.setBounds(10, 200,  TallySystem.S_WIN_SIZE_WIDTH-20,  350);
@@ -129,7 +130,6 @@ public class OperationPanel extends JPanel {
     }
 
     public void validateClick() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        m_logPanel.setText("");
         evr = EncryptedVoteRecord.readEncryptedVotesFile("EncryptedVoteRecord.dat");
         printLog("Read votes :" + evr.size());
         key = CryptoEngine.getVotePrivateKey();
@@ -158,7 +158,6 @@ public class OperationPanel extends JPanel {
         if (state.isBlank()){
             state = "SA";
         }
-        m_logPanel.setText("");
         printLog("Decrypting vote ...");
         new Thread(new Runnable() {
             @Override
@@ -171,10 +170,7 @@ public class OperationPanel extends JPanel {
                 Tally.numCandidatesToElect = 6; //6 for half senate, 12 for full senate
                 int option = JOptionPane.showConfirmDialog(null, "Decryption succeed. Tally the vote?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
                 if (option == 0) {
-                    m_logPanel.setText("");
-                    printLog("Starting tally ...");
                     Tally.tallyVotes();
-                    printLog("Tally completed");
                 }
             }
         }).start();
@@ -182,7 +178,10 @@ public class OperationPanel extends JPanel {
 
     public void recountClick() {
         // call recount();
-        recount();
+        Thread newTread = new Thread(() -> {
+            Tally.tallyVotes();
+        });
+        newTread.start();
     }
 
     public void excludeClick() {
@@ -215,26 +214,7 @@ public class OperationPanel extends JPanel {
         Tally.ballotPaper = null;
         m_controller.gotoPhysicalKeyPanel();
     }
-    public void recount(){
-        Thread newTread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                printLog("Starting tally ...");
-                Tally.tallyVotes();
-                printLog("Tally completed");
-            }
-        });
-        newTread.start();
-        /**
-         *
-         if (Tally.ballotPaper != null) {
-         for (Vote v : Tally.voteList){
-         v.isExhausted = false;
-         }
-         Tally.tallyVotes();
-         }
-         */
-    }
+
     public void showPanel(String userName) {
         m_welcomeLab.setText("Welcome, " + userName + "!");
         this.setVisible(true);

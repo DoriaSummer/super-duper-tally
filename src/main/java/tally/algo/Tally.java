@@ -59,8 +59,7 @@ public class Tally {
 		try {
 			// convert preferences to below line
 			log("Convert preference to below line");
-			electedCandidates.clear();
-			ballotPaper.excludedCandidates.clear();
+			resetCacheData();
 			for (Vote v : voteList) {
 				v.convertToBelowLineVote();
 			}
@@ -154,7 +153,7 @@ public class Tally {
 		List<Integer> keySet = new ArrayList<Integer>(tally.keySet());
 		Collections.sort(keySet);
 		for (Integer i : keySet) {
-			System.out.println(tally.get(i) + " : " + i + " (" + ballotPaper.getCandidateById(i) + ")");
+			log(tally.get(i) + " : " + i + " (" + ballotPaper.getCandidateById(i) + ")");
 		}
 	}
 	
@@ -165,6 +164,13 @@ public class Tally {
 			} catch (PartyNotFoundException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	public static void resetCacheData() {
+		electedCandidates.clear();
+		ballotPaper.excludedCandidates.clear();
+		for (Vote v : voteList) {
+			v.reset();
 		}
 	}
 

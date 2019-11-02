@@ -222,7 +222,7 @@ public class Vote {
 	
 	// convert above line votes to below line votes
 	public void convertToBelowLineVote() throws PartyNotFoundException {
-		reset();
+		currentPreference = 0;
 		if (voteType == voteTypes.NOT_DEFINED) {
 			convertedPreferenceBelowLine = new int[1];
 			convertedPreferenceBelowLine[0] = 0;

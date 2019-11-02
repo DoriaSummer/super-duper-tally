@@ -144,9 +144,5 @@ public class TallySystem implements TallyController {
         m_operationPanel.setVisible(false);
         m_excludePanel.showPanel();
     }
-    @Override
-    public void tallyVotes(){
-        m_operationPanel.recount();
-    }
 
 }
