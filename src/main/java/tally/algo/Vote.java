@@ -246,6 +246,9 @@ public class Vote {
 		}
 		preferencesBelow = convertedPreferenceBelowLine;
 		voteType = voteTypes.BELOW_LINE;
+		transferValue = 1.0;
+		currentPreference = 0;
+		isExhausted = false;
 	}
 	
 	// return this vote's current preferred candidate id, potentially after transferring from previous candidates

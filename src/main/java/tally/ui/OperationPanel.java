@@ -16,7 +16,7 @@ public class OperationPanel extends JPanel {
     JLabel m_msgLab;
     JTextPane m_logPanel;
     JScrollPane scrollContainP;
-    JButton m_validateBtn;
+    JButton m_verifyBtn;
     JButton m_decryptBtn;
     JButton m_recountBtn;
     JButton m_excludeBtn;
@@ -46,12 +46,12 @@ public class OperationPanel extends JPanel {
         containPanel.add(m_msgLab);
 
         // Press vailidateBtn to check the validation of the votes and exclude invalid votes
-        m_validateBtn = new JButton("Validate");
-        m_validateBtn.setBounds(10, 80, 80, 25);
-        m_validateBtn.addActionListener(new ActionListener() {
+        m_verifyBtn = new JButton("Validate");
+        m_verifyBtn.setBounds(10, 80, 80, 25);
+        m_verifyBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    validateClick();
+                    verifyClick();
                 } catch (InvalidKeySpecException e) {
                     e.printStackTrace();
                 } catch (NoSuchAlgorithmException e) {
@@ -59,7 +59,7 @@ public class OperationPanel extends JPanel {
                 }
             }
         });
-        containPanel.add(m_validateBtn);
+        containPanel.add(m_verifyBtn);
 
         // Press decryptBtn to decrypt the vote data
         m_decryptBtn = new JButton("Decrypt");
@@ -129,19 +129,19 @@ public class OperationPanel extends JPanel {
         setVisible(false);
     }
 
-    public void validateClick() throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public void verifyClick() throws InvalidKeySpecException, NoSuchAlgorithmException {
         evr = EncryptedVoteRecord.readEncryptedVotesFile("EncryptedVoteRecord.dat");
         printLog("Read votes :" + evr.size());
         key = CryptoEngine.getVotePrivateKey();
         printLog("Verifying vote ...");
-        Thread validateTread = new Thread(new Runnable() {
+        Thread verifyTread = new Thread(new Runnable() {
             @Override
             public void run() {
                 EncryptedVoteRecord.verifyEncryptedVotes(evr, key);
                 printLog("Successfully verified vote");
-                TallySystem.showInfoDialog("Votes validate succeed"); }
+                TallySystem.showInfoDialog("Successfully verified vote"); }
         });
-        validateTread.start();
+        verifyTread.start();
     }
 
     public void decryptClick() {
@@ -151,7 +151,7 @@ public class OperationPanel extends JPanel {
 //            return;
 //        }
         if (evr == null){
-            TallySystem.showInfoDialog("Please validate first.");
+            TallySystem.showInfoDialog("Please verify first.");
             return;
         }
         String state = Delegate.GetInstance().getOwnState();
@@ -213,7 +213,11 @@ public class OperationPanel extends JPanel {
 
     void logoutClick() {
         // clear
-        TallySystem.showInfoDialog("Logout succeed");
+        int option = JOptionPane.showConfirmDialog(null, "Logout succeed. Exit system?", "Confirm dialog", JOptionPane.YES_NO_OPTION);
+        if (option == 0) {
+            System.out.println("Quit confirm");
+            System.exit(0);
+        }
         Delegate.GetInstance().logout();
         Tally.ballotPaper = null;
         m_controller.gotoPhysicalKeyPanel();

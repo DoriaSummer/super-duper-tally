@@ -38,7 +38,7 @@ public class TallySystem implements TallyController {
 
         // new frame
         JFrame.setDefaultLookAndFeelDecorated(true);
-        m_mainFrame = new JFrame("Super-duper Tally System");
+        m_mainFrame = new JFrame("WULI'S TALLY SYSTEM");
         // set frame size
         m_mainFrame.setPreferredSize(new Dimension(S_WIN_SIZE_WIDTH, S_WIN_SIZE_HEIGHT));
         // set frame location at the center of the screen
